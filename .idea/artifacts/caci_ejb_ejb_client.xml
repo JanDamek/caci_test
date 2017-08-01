@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="ejb-jar" name="caci_ejb:ejb-client">
+    <output-path>$PROJECT_DIR$/caci_ejb/target</output-path>
+    <root id="archive" name="caci_ejb-0.0.1-SNAPSHOT-client.jar">
+      <element id="artifact" artifact-name="caci_ejb:ejb-client exploded" />
+    </root>
+  </artifact>
+</component>

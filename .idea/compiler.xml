@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="caci_common" />
+        <module name="caci_ear" />
+        <module name="caci_ejb" />
+        <module name="caci_web" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="caci_common" target="1.8" />
+      <module name="caci_ear" target="1.8" />
+      <module name="caci_ejb" target="1.8" />
+      <module name="caci_test" target="1.8" />
+      <module name="caci_web" target="1.8" />
+      <module name="piksel" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

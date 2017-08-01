@@ -1,0 +1,255 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>caci_test</artifactId>
+    <groupId>eu.damek</groupId>
+    <version>0.0.1-SNAPSHOT</version>
+
+    <description>Coding chalenge</description>
+    <packaging>pom</packaging>
+
+    <name>caci_test</name>
+
+    <url>https://caci.damek-soft.eu/</url>
+
+    <properties>
+        <J8Mapper>a9efaff37c</J8Mapper>
+        <primefaces.version>6.1</primefaces.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <sonar.host.url>https://sonar.damek-soft.eu/</sonar.host.url>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>JBoss-arquillian</id>
+            <name>JBoss repository</name>
+            <url>http://repository.jboss.org/nexus/content/groups/public</url>
+            <layout>default</layout>
+        </repository>
+        <repository>
+            <id>prime-repo</id>
+            <name>PrimeFaces Maven Repository</name>
+            <url>https://repository.primefaces.org</url>
+            <layout>default</layout>
+        </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+            <layout>default</layout>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>eap</id>
+            <url>http://maven.repository.redhat.com/techpreview/all</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <!--TEST DEPENDENCY-->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.12</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>info.cukes</groupId>
+                <artifactId>cucumber-java8</artifactId>
+                <version>1.2.5</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>info.cukes</groupId>
+                <artifactId>cucumber-junit</artifactId>
+                <version>1.2.5</version>
+                <scope>test</scope>
+            </dependency>
+
+            <!--JBOSS SERVER DEPENDENCY-->
+            <dependency>
+                <groupId>org.jboss.spec</groupId>
+                <artifactId>jboss-javaee-all-7.0</artifactId>
+                <version>1.0.1.Final</version>
+                <type>pom</type>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.primefaces</groupId>
+                <artifactId>primefaces</artifactId>
+                <version>${primefaces.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-fileupload</groupId>
+                <artifactId>commons-fileupload</artifactId>
+                <version>1.3.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.4</version>
+            </dependency>
+
+            <!-- Mapper -->
+            <dependency>
+                <groupId>com.github.rpridal</groupId>
+                <artifactId>J8Mapper</artifactId>
+                <version>${J8Mapper}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.4</version>
+            </dependency>
+
+            <dependency>
+                <groupId>eu.damek</groupId>
+                <artifactId>caci_ejb</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+                <type>ejb</type>
+            </dependency>
+            <dependency>
+                <groupId>eu.damek</groupId>
+                <artifactId>caci_ejb</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+                <type>ejb-client</type>
+            </dependency>
+            <dependency>
+                <groupId>eu.damek</groupId>
+                <artifactId>caci_web</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+                <type>war</type>
+            </dependency>
+            <dependency>
+                <groupId>eu.damek</groupId>
+                <artifactId>caci_common</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+                <type>jar</type>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <modules>
+        <module>caci_ejb</module>
+        <module>caci_web</module>
+        <module>caci_ear</module>
+        <module>caci_common</module>
+    </modules>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>2.17</version>
+                    <executions>
+                        <execution>
+                            <id>checkstyle</id>
+                            <phase>validate</phase>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                            <configuration>
+                                <failOnViolation>true</failOnViolation>
+                                <configLocation>${session.executionRootDirectory}/src/checkstyle/checkstyle.xml
+                                </configLocation>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>3.6</version>
+                    <dependencies>
+                        <dependency><!-- add support for ssh/scp -->
+                            <groupId>org.apache.maven.wagon</groupId>
+                            <artifactId>wagon-ssh</artifactId>
+                            <version>2.10</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-project-info-reports-plugin</artifactId>
+                    <version>2.9</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>2.8</version>
+                    <configuration>
+                        <outputDirectory>${project.build.directory}/javadoc</outputDirectory>
+                        <reportOutputDirectory>${project.reporting.outputDirectory}/javadoc</reportOutputDirectory>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>attach-javadocs</id>
+                            <phase>site</phase>
+                            <goals>
+                                <goal>aggregate</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>3.2</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.3</version>
+                <executions>
+                    <execution>
+                        <id>attach-site</id>
+                        <phase>site</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <distributionManagement>
+        <site>
+            <id>damek-soft.eu</id>
+            <name>piksel (damek-soft.eu)</name>
+            <url>
+                scp://damekjan@ssh.mazlusek.cz:/var/www/damek-soft.eu/documentation/piksel/site/
+            </url>
+        </site>
+    </distributionManagement>
+
+    <ciManagement>
+        <system>Jenkins</system>
+        <url>https://jenkins.damek-soft.eu</url>
+    </ciManagement>
+
+</project>

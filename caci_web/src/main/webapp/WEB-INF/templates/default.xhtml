@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<f:view contentType="text/html"/>
+<h:head>
+    <title><h:outputText value="#{msg.caci_coding_challenge}"/></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+</h:head>
+<h:body>
+    <div id="main">
+        <!-- header begins -->
+        <div id="header">
+            <div id="buttons">
+                <h:outputText value="#{msg.CACI_test}"/>
+            </div>
+        </div>
+
+        <div id="cont_out">
+            <ui:insert name="content">
+                [Template content will be inserted here]
+            </ui:insert>
+        </div>
+    </div>
+
+</h:body>
+</html>
+
+

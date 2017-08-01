@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="/WEB-INF/templates/default.xhtml"
+>
+
+    <ui:define name="content">
+        <h2 class="h3">
+            <h:outputText value="#{msg.rulette}"/>
+        </h2>
+
+        <h:form prependId="false">
+            <p:panelGrid columns="2" id="gamePanel">
+                <p:panelGrid columns="2">
+                    <p:panelGrid columns="1">
+                        <h:outputLabel for="customerId" value="#{msg.customer}"/>
+                        <p:inputText id="customerId" value="#{gameController.customer}"/>
+                    </p:panelGrid>
+                    <p:panelGrid columns="1">
+                        <h:outputLabel for="customerCashId" value="#{msg.cash}"/>
+                        <h:outputText id="customerCashId" value="#{gameController.cash}"/>
+                    </p:panelGrid>
+                </p:panelGrid>
+                <p:panelGrid columns="1">
+                    <h:outputLabel for="betId" value="#{msg.bet}"/>
+                    <p:selectOneRadio id="betId" value="#{gameController.bet}"
+                                      columns="1"
+                                      layout="grid"
+                                      required="true">
+                        <f:selectItems value="#{gameController.bets}"/>
+                    </p:selectOneRadio>
+                </p:panelGrid>
+                <p:panelGrid columns="1">
+                    <h:outputLabel for="pocketId" value="#{msg.bet}"/>
+                    <p:selectOneRadio columns="6"
+                                      layout="grid"
+                                      id="pocketId"
+                                      value="#{gameController.pocket}"
+                                      required="true">
+                        <f:selectItems value="#{gameController.pockets}"/>
+                    </p:selectOneRadio>
+                </p:panelGrid>
+                <p:panelGrid columns="1">
+                    <h:outputText value="#{msg.pocketNumber}"/>
+                    <h:outputText value="#{gameController.lastPocketNumber}"/>
+                    <h:outputText value="#{msg.lastWin}"/>
+                    <h:outputText value="#{gameController.lastWin}"/>
+                </p:panelGrid>
+            </p:panelGrid>
+            <p:commandButton
+                    value="#{msg.setBetAndSpinWheel}"
+                    action="#{gameController.setBetAndSpinWheel}"
+                    update="gamePanel"/>
+        </h:form>
+    </ui:define>
+</ui:composition>

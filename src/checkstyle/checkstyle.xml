@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC
+    "-//Puppy Crawl//DTD Check Configuration 1.2//EN"
+    "http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
+<module name="Checker">
+    <module name="TreeWalker">
+        <module name="JavadocMethod">
+            <property name="scope" value="package" />
+        </module>
+        <module name="JavadocType"/>
+        <module name="JavadocVariable"/>
+        <module name="JavadocStyle">
+            <property name="checkFirstSentence" value="false"/>
+            <property name="scope" value="package" />
+            <property name="checkEmptyJavadoc" value="true" />
+        </module>
+        <module name="AtclauseOrder" />
+        <module name="JavadocTagContinuationIndentation" />
+        <module name="NonEmptyAtclauseDescription"/>
+        <module name="SingleLineJavadoc"/>
+        <!--module name="SummaryJavadocCheck"/-->
+        
+        <!-- Added right curly check to avoid one line methods, because
+
+             JavadocMethod check does not notice if javadoc is missing
+
+              for one-liners -->
+
+        <module name="RightCurly">
+
+            <property name="option" value="alone"/>
+
+            <property name="tokens" value="CLASS_DEF,METHOD_DEF"/>
+
+        </module>
+    </module>
+</module>
