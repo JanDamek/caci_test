@@ -28,7 +28,7 @@ public class GameController {
     @Inject
     private GameRouletteService gameRouletteService;
 
-    private String customer;
+    private String customer = "default";
     private String bet;
     private List<String> bets;
     private List<String> pockets;
