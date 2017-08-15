@@ -1,9 +1,9 @@
 package eu.damek.service;
 
 import eu.damek.dao.CustomerDAO;
+import eu.damek.entity.Bet;
 import eu.damek.entity.Customer;
 import eu.damek.exception.RouletteGameException;
-import eu.damek.model.BetType;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -16,26 +16,6 @@ import javax.inject.Inject;
 @Stateless
 public class GameRouletteService {
 
-    /**
-     * multiply for win by number
-     */
-    private static final int WIN_BY_NUMBER = 36;
-    /**
-     * multiply for win by zero
-     */
-    private static final int WIN_BY_ZERO = 36;
-    /**
-     * multiply for win by double zero
-     */
-    private static final int WIN_BY_DOUBLE_ZERO = 36;
-    /**
-     * multiply for win by odd
-     */
-    private static final int WIN_BY_ODD = 2;
-    /**
-     * multiply for win by even
-     */
-    private static final int WIN_BY_EVEN = 2;
     /**
      * injection of wheel service
      */
@@ -79,9 +59,10 @@ public class GameRouletteService {
      */
     public void customerBetForNumberOrZero(Customer customer, Integer bet, int betForPocket)
             throws RouletteGameException {
-        customer.setBet(bet);
-        customer.setPocketNumber(betForPocket);
-        customer.setBetType(BetType.BET_FOR_NUMBER);
+        Bet bet1 = new Bet();
+        bet1.setBet(bet);
+        bet1.setBetAs(new PocketWinRule(betForPocket));
+        customer.getBets().add(bet1);
     }
 
     /**
@@ -91,65 +72,9 @@ public class GameRouletteService {
      * @return return the amount of win or zero for lose
      */
     public Integer customerTakeProfit(Customer customer) {
-        switch (customer.getBetType()) {
-            case BET_FOR_NUMBER:
-                return calcWinByNumber(customer);
-            case BET_FOR_ODD:
-                return calcWinByOdd(customer);
-            case BET_FOR_EVEN:
-                return calcWinByEven(customer);
-            case BET_FOR_00:
-                return calcWinByDoubleZero(customer);
-            default:
-                return 0;
-        }
+        return customer.takeProfit(getPocketNumber());
     }
 
-    /**
-     * calculation of amounth of win by double zero
-     *
-     * @param customer customer to calc
-     * @return amount of win
-     */
-    private Integer calcWinByDoubleZero(Customer customer) {
-        return pocketNumber == -1 ? customer.getBet() * WIN_BY_DOUBLE_ZERO : 0;
-    }
-
-    /**
-     * calculation of amounth of win by even
-     *
-     * @param customer customer to calc
-     * @return amount of win
-     */
-    private Integer calcWinByEven(Customer customer) {
-        return pocketNumber > 0 && pocketNumber % 2 == 0 ? customer.getBet() * WIN_BY_EVEN : 0;
-    }
-
-    /**
-     * calculation of amounth of win by odd
-     *
-     * @param customer customer to calc
-     * @return amount of win
-     */
-    private Integer calcWinByOdd(Customer customer) {
-        return pocketNumber > 0 && pocketNumber % 2 == 1 ? customer.getBet() * WIN_BY_ODD : 0;
-    }
-
-    /**
-     * calculation of amounth of win by number
-     *
-     * @param customer customer to calc
-     * @return amount of win
-     */
-    private Integer calcWinByNumber(Customer customer) {
-        if (pocketNumber == 0 && customer.getPocketNumber() == 0) {
-            return customer.getBet() * WIN_BY_ZERO;
-        } else if (customer.getPocketNumber().equals(pocketNumber)) {
-            return customer.getBet() * WIN_BY_NUMBER;
-        } else {
-            return 0;
-        }
-    }
 
     /**
      * set the bet for odd numbers
@@ -159,8 +84,10 @@ public class GameRouletteService {
      * @throws RouletteGameException when the bet is illegal
      */
     public void customerBetForOdd(Customer customer, int bet) throws RouletteGameException {
-        customer.setBet(bet);
-        customer.setBetType(BetType.BET_FOR_ODD);
+        Bet bet1 = new Bet();
+        bet1.setBet(bet);
+        bet1.setBetAs(new OddWinRule());
+        customer.getBets().add(bet1);
     }
 
     /**
@@ -171,8 +98,10 @@ public class GameRouletteService {
      * @throws RouletteGameException when the bet is illegal
      */
     public void customerBetForEven(Customer customer, int bet) throws RouletteGameException {
-        customer.setBet(bet);
-        customer.setBetType(BetType.BET_FOR_EVEN);
+        Bet bet1 = new Bet();
+        bet1.setBet(bet);
+        bet1.setBetAs(new EvenWinRule());
+        customer.getBets().add(bet1);
     }
 
     /**
@@ -183,8 +112,10 @@ public class GameRouletteService {
      * @throws RouletteGameException if the bet is invalid
      */
     public void customerBetForDoubleZero(Customer customer, int bet) throws RouletteGameException {
-        customer.setBet(bet);
-        customer.setBetType(BetType.BET_FOR_00);
+        Bet bet1 = new Bet();
+        bet1.setBet(bet);
+        bet1.setBetAs(new PocketDoubleZeroWinRule());
+        customer.getBets().add(bet1);
     }
 
     /**

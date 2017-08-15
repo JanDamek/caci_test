@@ -1,9 +1,8 @@
 package eu.damek.entity;
 
-import eu.damek.exception.RouletteGameException;
-import eu.damek.model.BetType;
-
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Project: caci_test
@@ -24,22 +23,14 @@ public class Customer {
     @Id
     private String name;
     /**
-     * amounts of bet
-     */
-    private Integer bet;
-    /**
      * cash of customer
      */
     private Integer cash;
     /**
-     * type of bet
+     * list of bets
      */
-    @Enumerated(EnumType.ORDINAL)
-    private BetType betType;
-    /**
-     * set the pocket number for bet
-     */
-    private Integer pocketNumber;
+    @ElementCollection
+    private List<Bet> bets;
 
     /**
      * getter for name of customer
@@ -81,64 +72,39 @@ public class Customer {
     }
 
     /**
-     * getter for bet
+     * getter for list of all bets
      *
-     * @return bet
+     * @return list of all Bet
      */
-    public Integer getBet() {
-        return bet;
-    }
-
-    /**
-     * setter for bet
-     *
-     * @param bet bet
-     * @throws RouletteGameException invalid set for bet
-     */
-    public void setBet(Integer bet) throws RouletteGameException {
-        if (bet <= 0) {
-            throw new RouletteGameException("Invalid BET");
+    public List<Bet> getBets() {
+        if (bets == null) {
+            bets = new ArrayList<>();
         }
-        this.bet = bet;
+        return bets;
     }
 
     /**
-     * getter for bet type
+     * setter for list of bets
      *
-     * @return bet type
+     * @param bets list of bets
      */
-    public BetType getBetType() {
-        return betType;
+    public void setBets(List<Bet> bets) {
+        this.bets = bets;
     }
 
     /**
-     * setter for bet type
+     * method for test all bets and return all profit from bets
      *
-     * @param betType bet type
+     * @param pocketNumber pocket number on wheel
+     * @return all wined cash
      */
-    public void setBetType(BetType betType) {
-        this.betType = betType;
-    }
-
-    /**
-     * getter for pocket number
-     *
-     * @return pocket number on bet
-     */
-    public Integer getPocketNumber() {
-        return pocketNumber;
-    }
-
-    /**
-     * setter pocket number
-     *
-     * @param pocketNumber pocket number
-     * @throws RouletteGameException invalid set for pocket number
-     */
-    public void setPocketNumber(Integer pocketNumber) throws RouletteGameException {
-        if (pocketNumber < 0 || pocketNumber > 36) {
-            throw new RouletteGameException("Invalid pocket number");
-        }
-        this.pocketNumber = pocketNumber;
+    @Transient
+    public Integer takeProfit(int pocketNumber) {
+        final Integer[] allProfit = {0};
+        bets.forEach(b -> {
+            allProfit[0] += b.getBetAs().isWin(pocketNumber) * b.getBet();
+        });
+        bets.clear();
+        return allProfit[0];
     }
 }

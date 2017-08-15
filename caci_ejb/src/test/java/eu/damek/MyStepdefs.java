@@ -61,7 +61,8 @@ public class MyStepdefs implements En {
         Given("^A customer has placed a bet of £(\\d+) on odd or even$", (Integer bet) -> {
             exceptionRouletteGame = false;
             try {
-                gameRouletteService.customerBetForOdd(customer, 10);
+                gameRouletteService.customerBetForOdd(customer, bet);
+                gameRouletteService.customerBetForEven(customer, bet);
             } catch (RouletteGameException e) {
                 exceptionRouletteGame = true;
             }
@@ -72,7 +73,7 @@ public class MyStepdefs implements En {
         Given("^A customer has placed a bet of £(\\d+) on even$", (Integer bet) -> {
             exceptionRouletteGame = false;
             try {
-                gameRouletteService.customerBetForEven(customer, 10);
+                gameRouletteService.customerBetForEven(customer, bet);
             } catch (RouletteGameException e) {
                 exceptionRouletteGame = true;
             }
@@ -86,7 +87,7 @@ public class MyStepdefs implements En {
         Given("^A customer has placed a bet of £(\\d+) on odd$", (Integer bet) -> {
             exceptionRouletteGame = false;
             try {
-                gameRouletteService.customerBetForOdd(customer, 10);
+                gameRouletteService.customerBetForOdd(customer, bet);
             } catch (RouletteGameException e) {
                 exceptionRouletteGame = true;
             }
@@ -95,7 +96,7 @@ public class MyStepdefs implements En {
             exceptionRouletteGame = false;
             try {
                 if (pocket.equalsIgnoreCase("00")) {
-                    gameRouletteService.customerBetForDoubleZero(customer, 10);
+                    gameRouletteService.customerBetForDoubleZero(customer, bet);
                 } else {
                     gameRouletteService.customerBetForNumberOrZero(customer, bet, Integer.valueOf(pocket));
                 }
